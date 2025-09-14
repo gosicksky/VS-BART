@@ -175,20 +175,6 @@ permute.vs = function(x.train,
     if (z_constant) {
       z.permuted <- z.train
       print("z.train is constant within id")
-      # z_unique <- z.train[!duplicated(id), , drop = FALSE]
-      # id_unique <- unique(id)
-      # 
-      # # Shuffle the rows across IDs
-      # z_shuffled <- z_unique[sample(nrow(z_unique)), , drop = FALSE]
-      # 
-      # # Create a permuted version of z.train
-      # z.permuted <- z.train  # same shape
-      # 
-      # # Assign shuffled values back by ID
-      # for (i in seq_along(id_unique)) {
-      #   rows <- which(id == id_unique[i])
-      #   z.permuted[rows, ] <- z_shuffled[rep(i, length(rows)), , drop = FALSE]
-      # }
       
     } else {
       print("z.train is not constant within id")

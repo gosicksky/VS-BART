@@ -154,52 +154,6 @@ permute.vs = function(x.train,
   while (cnt < npermute) {
     print(cnt)
     y.permuted = ave(y.train, id, FUN = function(x) sample(x, replace = FALSE))
-    #shuffle y
-    # y.permuted = sample(y.permuted, replace = FALSE)
-    #shuffle Z
-    
-    #shuffle X
-    # x.permuted <- x.train
-    # for (cluster in unique(id)) {
-    #   cluster_idx <- which(id == cluster)
-    #   perm <- sample(length(cluster_idx))  # generate permutation within cluster
-    #   x.permuted[cluster_idx, ] <- x.train[cluster_idx, ][perm, , drop = FALSE]
-    # }
-    
-    #check if z.train is constant within id or not
-    z_constant <- all(tapply(seq_len(nrow(z.train)), id, function(rows) {
-      all(apply(z.train[rows, , drop = FALSE], 2, function(col) length(unique(col)) == 1))
-    }))
-    
-    if (z_constant) {
-      z.permuted <- z.train 
-      print("z.train is constant within id")
-      z_unique <- z.train[!duplicated(id), , drop = FALSE]
-      id_unique <- unique(id)
-      
-      # Shuffle the rows across IDs
-      z_shuffled <- z_unique[sample(nrow(z_unique)), , drop = FALSE]
-      
-      # Create a permuted version of z.train
-      z.permuted <- z.train  # same shape
-      
-      # Assign shuffled values back by ID
-      for (i in seq_along(id_unique)) {
-        rows <- which(id == id_unique[i])
-        z.permuted[rows, ] <- z_shuffled[rep(i, length(rows)), , drop = FALSE]
-      }
-      
-    } else {
-      print("z.train is not constant within id")
-      z.permuted <- z.train  # make a copy
-      z.permuted[] <- NA     # initialize with NA
-      
-      for (cluster_id in unique(id)) {
-        idx <- which(id == cluster_id)
-        z.permuted[idx, ] <- z.train[sample(idx, length(idx), replace = FALSE), ]
-      }
-    }
-    z.permuted <- as.data.frame(z.permuted)
     print("shuffle complete")
     
     bart = wbart(x.train = x.train, y.train = y.permuted, z.train = z.train, id = id,
