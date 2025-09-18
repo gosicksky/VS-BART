@@ -5,6 +5,8 @@ This is the repository for the paper "Multi-level variable selection using a BAR
 
 To use the code, you could use the BartRF_0.1.tar.gz (the unified model) and BartRI_0.1.tar.gz (the two-step model) zip files to install the packages in R.
 
+Help documents are going on.
+
 ## Example
 
 For the unified model:
