@@ -1,3 +1,21 @@
+lower_matrix <- function(a) {
+  n <- length(a)
+  dimen <- (1+sqrt(1+8*n))/2
+  lower_triangle_matrix <- matrix(0, nrow = dimen, ncol = dimen)
+  diag(lower_triangle_matrix) <- 1
+  for (i in 2:dimen) {
+    lower_triangle_matrix[i,1:(i-1)] <- a[(1+(i-1)*(i-2)/2):(1+(i-1)*(i-2)/2+(i-2))]
+  }
+  return(lower_triangle_matrix)
+}
+
+#' @export
+#' @useDynLib BartRF, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
+#' @importFrom lme4 lmer
+#' @importFrom Matrix bdiag
+#' @importFrom merTools REsdExtract
+#' @importFrom truncnorm rtruncnorm
 wbart = function(x.train, 
                  y.train, 
                  z.train,
@@ -287,7 +305,7 @@ wbart = function(x.train,
   #call c++ function
   print(getwd())
   ptm = proc.time()
-  sourceCpp(paste0(getwd(),'/src/cwbart.cpp'))
+  # sourceCpp(paste0(getwd(),'/src/cwbart.cpp'))
   res = cwbart(
     N,  #number of observations in training data
     p,  #dimension of x

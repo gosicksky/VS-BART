@@ -1,3 +1,5 @@
+#' @export
+#' @useDynLib BartRF, .registration = TRUE
 permute.vs = function(x.train, 
                       y.train, 
                       z.train,
