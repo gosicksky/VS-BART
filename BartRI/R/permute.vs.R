@@ -1,3 +1,6 @@
+#' @export
+#' @useDynLib BartRI, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 permute.vs = function(x.train, 
                       y.train, 
                       z.train,

@@ -1,17 +1,30 @@
 Package: BartRI
-Title: What the Package Does (One Line, Title Case)
-Version: 0.1
+Type: Package
+Title: Bayesian Additive Regression Trees with Random Effect variable Selection
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("First", "Last", email = "first.last@example.com",
+           role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-        license
+Description: 
+    Implements Bayesian Additive Regression Trees (BART) with 
+    Random Effect. Do selection for both fix and random effect
+License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-LinkingTo: Rcpp
+RoxygenNote: 7.3.3
+Imports:
+    Rcpp,
+    lme4,
+    Matrix,
+    merTools,
+    truncnorm,
+    nnet,
+    fastDummies,
+    binaryLogic
+LinkingTo:
+    Rcpp,
+    RcppEigen,
+    BH
+SystemRequirements: C++17
 NeedsCompilation: yes
-Packaged: 2025-07-24 08:03:33 UTC; zkm
-Author: First Last [aut, cre] (YOUR-ORCID-ID)
-Maintainer: First Last <first.last@example.com>

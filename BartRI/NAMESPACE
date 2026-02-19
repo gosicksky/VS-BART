@@ -1,5 +1,19 @@
-# Default NAMESPACE created by R
-# Remove the previous line if you edit this file
+useDynLib(BartRI, .registration = TRUE)
 
-# Export all names
-exportPattern("^[^.]")
+importFrom(Rcpp, evalCpp)
+
+## If you truly want to export “everything alphabetic”, keep this.
+## (Not recommended for CRAN-style packages, but you asked for full code.)
+exportPattern("^[[:alpha:]]+")
+
+importFrom(graphics, axis, points, segments)
+
+importFrom(stats, as.formula, ave, median, qchisq, quantile, rnorm, sd)
+
+## Fix the R CMD check NOTES:
+importFrom(lme4, lmer, VarCorr)
+importFrom(Matrix, bdiag)
+importFrom(merTools, REsdExtract)
+importFrom(truncnorm, rtruncnorm)
+importFrom(nnet, class.ind)
+importFrom(binaryLogic, as.binary)

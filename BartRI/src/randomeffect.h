@@ -1,9 +1,9 @@
 #include <Rcpp.h>
-#include <eigen3/Eigen/Dense>
+// #include <eigen3/Eigen/Dense>
+#include <RcppEigen.h>
 #include <boost/random.hpp>
 #include <boost/random/normal_distribution.hpp>
 using namespace Rcpp;
-
 std::vector<std::vector<double>> low_matrix(std::vector<double> gamma, int p);
 
 std::vector<double> rf_predict(int N, int n, int *id, std::vector<std::vector<std::vector<double>>> z,
