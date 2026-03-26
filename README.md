@@ -13,9 +13,11 @@ install.packages("BartVS_0.1.0.tar.gz")
 
 The 'BartVS' package provides the following functions for variable selection in multi-level models:
 
-`permute.vs_unified` implements the variable selection procedure for the unified model, which simultaneously models fixed and random effects.
-`permute.vs_two_step` implements the variable selection procedure for the two-step model, which first estimates random effects and then performs variable selection on the fitted values.
-`wabrt_unified` is a wrapper function for fitting the unified BART model, which is used within the variable selection procedure. The parameter `sparse` controls whether to use a sparse BART model for variable selection.
+1. `permute.vs_unified` implements the variable selection procedure for the unified model, which simultaneously models fixed and random effects.
+
+2. `permute.vs_two_step` implements the variable selection procedure for the two-step model, which first estimates random effects and then performs variable selection on the fitted values.
+
+3. `wabrt_unified` is a wrapper function for fitting the unified BART model, which is used within the variable selection procedure. The parameter `sparse` controls whether to use a sparse BART model for variable selection.
 
 ## Example
 
