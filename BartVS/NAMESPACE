@@ -1,0 +1,13 @@
+useDynLib(BartVS, .registration=TRUE)
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
+
+importFrom(graphics, axis, points, segments)
+
+importFrom(stats, as.formula, ave, median, qchisq, quantile, rnorm, sd)
+
+importFrom(lme4, lmer, VarCorr)
+importFrom(Matrix, bdiag)
+importFrom(merTools, REsdExtract)
+importFrom(truncnorm, rtruncnorm)
+importFrom(nnet, class.ind)
