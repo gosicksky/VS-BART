@@ -80,4 +80,4 @@ result <- BartVS::wbart_unified(x.train = as.data.frame(data$X), y.train = data$
 
 ## Future plans
 
-Upload to CRAN
+Simplify the code and Upload the package to CRAN.
