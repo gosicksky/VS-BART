@@ -65,8 +65,6 @@ RcppExport SEXP cwbart_two_step(
     SEXP sexp_q,
     SEXP sexp_group_num,
     SEXP sexp_id,
-    SEXP sexp_z_c0,
-    SEXP sexp_z_d0,
     SEXP sexp_z_b,
     SEXP sexp_z_lambda,
     SEXP sexp_z_lambda_mean,
@@ -152,9 +150,6 @@ RcppExport SEXP cwbart_two_step(
       }
     }
   }
-  
-  double z_c0 = Rcpp::as<double>(sexp_z_c0);
-  double z_d0 = Rcpp::as<double>(sexp_z_d0);
   
   Rcpp::NumericVector z_bv(sexp_z_b);
   std::vector<std::vector<double>> z_b(group_num, std::vector<double>(q));

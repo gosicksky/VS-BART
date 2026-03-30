@@ -9,6 +9,7 @@ lower_matrix <- function(a) {
   return(lower_triangle_matrix)
 }
 
+#' Unified Model for BART with Random Effects
 #' @export
 #' @useDynLib BartRF, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
@@ -16,6 +17,70 @@ lower_matrix <- function(a) {
 #' @importFrom Matrix bdiag
 #' @importFrom merTools REsdExtract
 #' @importFrom truncnorm rtruncnorm
+#' 
+#' @param x.train Matrix or data frame of predictors for training (N x p).
+#' @param y.train Numeric vector of response values (length N).
+#' @param z.train Matrix or data frame of random-effect covariates.
+#' @param id Vector of group identifiers for random effects.
+#' @param x.test Optional matrix of predictors for testing.
+#' @param sparse Logical; whether to use sparse Dirichlet prior.
+#' @param theta Hyperparameter for sparse prior.
+#' @param omega Hyperparameter for sparse prior.
+#' @param a Tree prior parameter (depth penalty).
+#' @param b Tree prior parameter (depth penalty).
+#' @param augment Logical; whether to use data augmentation.
+#' @param rho Prior parameter controlling variable selection.
+#' @param xinfo Matrix of cutpoints for predictors.
+#' @param numcut Number of cutpoints for continuous predictors.
+#' @param usequants Logical; use quantiles for cutpoints.
+#' @param cont Logical; treat predictors as continuous.
+#' @param rm.const Logical; remove constant predictors.
+#' @param grp Grouping structure for predictors (for categorical variables).
+#' @param xnames Optional names of predictors.
+#' @param categorical.idx Indices of categorical predictors.
+#' @param power Power parameter for split probability.
+#' @param base Base parameter for split probability.
+#' @param split.prob Character; "polynomial" or "exponential".
+#' @param k Prior scale parameter for terminal node values.
+#' @param sigmaf Prior standard deviation for function values.
+#' @param sigest Estimate of residual standard deviation.
+#' @param sigdf Degrees of freedom for sigma prior.
+#' @param sigquant Quantile for sigma prior.
+#' @param lambda Prior scale parameter for sigma.
+#' @param fmean Prior mean of response.
+#' @param w Observation weights.
+#' @param ntree Number of trees in the ensemble.
+#' @param ndpost Number of posterior draws.
+#' @param nskip Number of burn-in iterations.
+#' @param keepevery Thinning parameter.
+#' @param nkeeptrain Number of posterior draws to keep for training predictions.
+#' @param nkeeptest Number of posterior draws to keep for test predictions.
+#' @param nkeeptestmean Number of posterior draws for test means.
+#' @param nkeeptreedraws Number of tree draws to retain.
+#' @param printevery Frequency of progress printing.
+#' @param transposed Logical; whether input matrices are already transposed.
+#' @param z_gamma_mean Prior mean vector for random effect covariance.
+#' @param z_gamma_cov Prior covariance matrix for random effect covariance
+#' @param z_lambda_mean Prior mean vector for random effect scale.
+#' @param z_lambda_cov Prior variance vector for random effect scale.
+#' @param z_alpha Hyperparameter prior for bernoulli indicator of lambda
+#' @param z_beta Hyperparameter prior for bernoulli indicator of lambda.
+#' @param seed Random seed.
+#' @param verbose Logical; print detailed output.
+#'
+#' @return A list of class \code{wbart} containing:
+#' \item{yhat.train}{Posterior samples of fitted values (training).}
+#' \item{yhat.test}{Posterior samples of fitted values (test).}
+#' \item{yhat.train.mean}{Posterior mean predictions (training).}
+#' \item{yhat.test.mean}{Posterior mean predictions (test).}
+#' \item{fix.train}{Fixed effect contributions (training).}
+#' \item{random.train}{Random effect contributions (training).}
+#' \item{vip}{Variable inclusion proportions.}
+#' \item{pvip}{Posterior variable inclusion probabilities.}
+#' \item{mi}{Metropolis importance scores.}
+#' \item{combined.lambda}{Aggregated random-effect scale parameters.}
+#' \item{D}{Posterior samples of random effect variance components.}
+#' \item{proc.time}{Computation time.}
 wbart_unified = function(x.train, 
                  y.train, 
                  z.train,
@@ -57,7 +122,6 @@ wbart_unified = function(x.train,
                  nkeeptreedraws=ndpost,
                  printevery=1000L, 
                  transposed=FALSE, 
-                 z_c0, z_d0,
                  z_gamma_mean, z_gamma_cov,
                  z_lambda_mean, z_lambda_cov,
                  z_alpha,z_beta,
@@ -106,7 +170,7 @@ wbart_unified = function(x.train,
     }
     categorical.idx = unique(grp)[which(sapply(unique(grp), function(s) sum(s==grp)) > 1)]
     
-    z_temp = rfModelMatrix.unified(z.train)
+    z_temp = rfModelMatrix_unified(z.train)
     z.train = t(z_temp$Z)
     z_grp = z_temp$grp
     
@@ -269,8 +333,6 @@ wbart_unified = function(x.train,
     q, #dimension of z
     group_num, #number of groups
     start_index, #start index for each group
-    z_c0, #c0 for sigma
-    z_d0, #d0 for sigma
     t(z_b), #random effect
     z_gamma, #start gamma for random effect
     z_gamma_mean, #mean for gamma
@@ -451,7 +513,7 @@ wbart_unified = function(x.train,
 }
 
 
-
+#' Two Step Model for BART with Random Effects
 #' @export
 #' @useDynLib BartVS, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
@@ -459,6 +521,71 @@ wbart_unified = function(x.train,
 #' @importFrom Matrix bdiag
 #' @importFrom merTools REsdExtract
 #' @importFrom truncnorm rtruncnorm
+#' 
+#' @param x.train Matrix or data frame of predictors for training (N x p).
+#' @param y.train Numeric vector of response values (length N).
+#' @param z.train Matrix or data frame of random-effect covariates.
+#' @param id Vector of group identifiers for random effects.
+#' @param x.test Optional matrix of predictors for testing.
+#' @param sparse Logical; whether to use sparse Dirichlet prior.
+#' @param theta Hyperparameter for sparse prior.
+#' @param omega Hyperparameter for sparse prior.
+#' @param a Tree prior parameter (depth penalty).
+#' @param b Tree prior parameter (depth penalty).
+#' @param augment Logical; whether to use data augmentation.
+#' @param rho Prior parameter controlling variable selection.
+#' @param xinfo Matrix of cutpoints for predictors.
+#' @param numcut Number of cutpoints for continuous predictors.
+#' @param usequants Logical; use quantiles for cutpoints.
+#' @param cont Logical; treat predictors as continuous.
+#' @param rm.const Logical; remove constant predictors.
+#' @param grp Grouping structure for predictors (for categorical variables).
+#' @param xnames Optional names of predictors.
+#' @param categorical.idx Indices of categorical predictors.
+#' @param power Power parameter for split probability.
+#' @param base Base parameter for split probability.
+#' @param split.prob Character; "polynomial" or "exponential".
+#' @param k Prior scale parameter for terminal node values.
+#' @param sigmaf Prior standard deviation for function values.
+#' @param sigest Estimate of residual standard deviation.
+#' @param sigdf Degrees of freedom for sigma prior.
+#' @param sigquant Quantile for sigma prior.
+#' @param lambda Prior scale parameter for sigma.
+#' @param fmean Prior mean of response.
+#' @param w Observation weights.
+#' @param ntree Number of trees in the ensemble.
+#' @param ndpost Number of posterior draws.
+#' @param nskip Number of burn-in iterations.
+#' @param keepevery Thinning parameter.
+#' @param nkeeptrain Number of posterior draws to keep for training predictions.
+#' @param nkeeptest Number of posterior draws to keep for test predictions.
+#' @param nkeeptestmean Number of posterior draws for test means.
+#' @param nkeeptreedraws Number of tree draws to retain.
+#' @param printevery Frequency of progress printing.
+#' @param transposed Logical; whether input matrices are already transposed.
+#' @param z_gamma_mean Prior mean vector for random effect covariance.
+#' @param z_gamma_cov Prior covariance matrix for random effect covariance
+#' @param z_lambda_mean Prior mean vector for random effect scale.
+#' @param z_lambda_cov Prior variance vector for random effect scale.
+#' @param z_alpha Hyperparameter prior for bernoulli indicator of lambda
+#' @param z_beta Hyperparameter prior for bernoulli indicator of lambda.
+#' @param two_step_alpha Significance level for variable selection in the second step.
+#' @param seed Random seed.
+#' @param verbose Logical; print detailed output.
+#'
+#' @return A list of class \code{wbart} containing:
+#' \item{yhat.train}{Posterior draws of fitted values (training).}
+#' \item{yhat.test}{Posterior draws of fitted values (test).}
+#' \item{yhat.train.mean}{Posterior mean predictions (training).}
+#' \item{yhat.test.mean}{Posterior mean predictions (test).}
+#' \item{fix.train}{Fixed effect contributions.}
+#' \item{random.train}{Random effect contributions.}
+#' \item{vip}{Variable inclusion proportions.}
+#' \item{pvip}{Posterior variable inclusion probabilities.}
+#' \item{mi}{Metropolis importance scores.}
+#' \item{combined.lambda}{Aggregated random-effect scale parameters.}
+#' \item{rf_select}{Selected random-effect variables from second step.}
+#' \item{proc.time}{Computation time.}
 wbart_two_step = function(x.train, 
                  y.train, 
                  z.train,
@@ -500,7 +627,6 @@ wbart_two_step = function(x.train,
                  nkeeptreedraws=ndpost,
                  printevery=1000L, 
                  transposed=FALSE, 
-                 z_c0, z_d0,
                  z_lambda_mean, z_lambda_cov,
                  z_alpha,z_beta,
                  two_step_alpha = 0.05,
@@ -726,8 +852,6 @@ wbart_two_step = function(x.train,
     q, #dimension of z
     group_num, #number of groups
     start_index, #start index for each group
-    z_c0, #c0 for sigma
-    z_d0, #d0 for sigma
     t(z_b), #random effect
     z_lambda, #start lambda for random effect
     z_lambda_mean, #mean for lambda
@@ -904,7 +1028,7 @@ wbart_two_step = function(x.train,
   
   ### Second Step: fit the random effect
   cluster_number = length(unique(id))
-  b_indep <- colMeans(result$rf_b * matrix(result$original.lambda, nrow = nrow(result$rf_b), ncol = cluster_number, byrow = TRUE))
+  b_indep <- colMeans(res$rf_b * matrix(res$original.lambda, nrow = nrow(res$rf_b), ncol = cluster_number, byrow = TRUE))
   z.train_indep <- as.data.frame(unique(data$Z))
   # Apply variable selection
   rf_select <- BartMixVs::permute.vs(
@@ -912,7 +1036,7 @@ wbart_two_step = function(x.train,
     y.train = b_indep, 
     ndpost = 5000, 
     nskip = 5000,
-    alpha = 0.05
+    alpha = two_step_alpha
   )
   res$rf_select = rf_select
   

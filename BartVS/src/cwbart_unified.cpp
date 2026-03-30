@@ -47,8 +47,6 @@ SEXP cwbart_unified(
     SEXP sexp_q,
     SEXP sexp_group_num,
     SEXP sexp_id,
-    SEXP sexp_z_c0,
-    SEXP sexp_z_d0,
     SEXP sexp_z_b,
     SEXP sexp_z_gamma,
     SEXP sexp_z_gamma_mean,
@@ -135,9 +133,6 @@ SEXP cwbart_unified(
       }
     }
   }
-  
-  double z_c0 = Rcpp::as<double>(sexp_z_c0);
-  double z_d0 = Rcpp::as<double>(sexp_z_d0);
   
   Rcpp::NumericVector z_bv(sexp_z_b);
   std::vector<std::vector<double>> z_b(group_num, std::vector<double>(q));
@@ -230,123 +225,6 @@ SEXP cwbart_unified(
       gamma_index ++;
     }
   }
-
-  // Rcpp::NumericVector true_fix_v(sexp_true_fix);
-  // std::vector<double> true_fix(n);
-  // for (int i = 0; i < n; i++) {
-  //   true_fix[i] = true_fix_v[i];
-  // }
-
-  // printf("n: %d\n", n);
-  // printf("p: %d\n", p);
-  // 
-  // //print id
-  // printf("id: \n");
-  // for (int i = 0; i < group_num + 1; i++) {
-  //   printf("%d ", id[i]);
-  // }
-  // printf("\n");
-  // 
-  // printf("y: \n");
-  // for (int i = 0; i < n; i++) {
-  //   printf("%lf ", iy[i]);
-  // }
-  // printf("\n");
-  // 
-  // printf("x: \n");
-  // for (int i = 0; i < n; i++) {
-  //   for (int j = 0; j < p; j++) {
-  //     printf("%lf ", ix[i * p + j]);
-  //   }
-  //   printf("\n");
-  // }
-  // 
-  // printf("Z_2d: \n");
-  // for (int i = 0; i < n; i++) {
-  //   for (int j = 0; j < q; j++) {
-  //     printf("%lf ", Z_2d[i][j]);
-  //   }
-  //   printf("\n");
-  // }
-  // 
-  // printf("Z_3d: \n");
-  // for (int i = 0; i < group_num; i++) {
-  //   for (int j = 0; j < id[i+1] - id[i]; j++) {
-  //     for (int l = 0; l < q; l++) {
-  //       printf("%lf ", Z_3d[i][j][l]);
-  //     }
-  //     printf("\n");
-  //   }
-  //   printf("\n");
-  // }
-  // 
-  // printf("q: %d\n", q);
-  // printf("group_num: %d\n", group_num);
-  // printf("id: \n");
-  // for (int i = 0; i < group_num + 1; i++) {
-  //   printf("%d ", id[i]);
-  // }
-  // printf("\n");
-  // 
-  // printf("z c0: %lf\n", z_c0);
-  // printf("z d0: %lf\n", z_d0);
-  // 
-  // printf("z b: \n");
-  // for (int i = 0; i < group_num; i++) {
-  //   for (int j = 0; j < q; j++) {
-  //     printf("%lf ", z_b[i][j]);
-  //   }
-  //   printf("\n");
-  // }
-  // 
-  // printf("z gamma: \n");
-  // for (int i = 0; i < q * (q - 1) / 2; i++) {
-  //   printf("%lf ", z_gamma[i]);
-  // }
-  // printf("\n");
-  // 
-  // printf("z Gamma: \n");
-  // for (int i = 0; i < q; i++) {
-  //   for (int j = 0; j < q; j++) {
-  //     printf("%lf ", z_Gamma[i][j]);
-  //   }
-  //   printf("\n");
-  // }
-  // 
-  // printf("z gamma mean: \n");
-  // for (int i = 0; i < q; i++) {
-  //   printf("%lf ", z_gamma_mean[i]);
-  // }
-  // printf("\n");
-  // 
-  // printf("z gamma cov: \n");
-  // for (int i = 0; i < q * (q - 1) / 2; i++) {
-  //   for (int j = 0; j < q * (q - 1) / 2; j++) {
-  //     printf("%lf ", z_gamma_cov[i][j]);
-  //   }
-  //   printf("\n");
-  // }
-  // 
-  // printf("z lambda: \n");
-  // for (int i = 0; i < q; i ++) {
-  //   printf("%lf ", z_lambda[i]);
-  // }
-  // printf("\n");
-  // //
-  // printf("z lambda mean: \n");
-  // for (int i = 0; i < q; i++) {
-  //   printf("%lf ", z_lambda_mean[i]);
-  // }
-  // printf("\n");
-  // 
-  // printf("z lambda cov: \n");
-  // for (int i = 0; i < q; i++) {
-  //   printf("%lf ", z_lambda_cov[i]);
-  // }
-  // printf("\n");
-  // 
-  // printf("z alpha: %lf\n", z_alpha);
-  // printf("z beta: %lf\n", z_beta);
 
    //return data structures (using Rcpp)
    Rcpp::NumericVector trmean(n); //train

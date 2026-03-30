@@ -1,5 +1,80 @@
+#' Permutation-based variable selection for unified BART models with random effects.  
 #' @export
 #' @useDynLib BartVS, .registration = TRUE
+#' 
+#' @param x.train Training predictors for fixed effects.
+#' @param y.train Numeric response vector.
+#' @param z.train Training predictors for random effects.
+#' @param id Grouping variable for clustered/random-effect structure.
+#' @param probit Logical; currently included for interface compatibility.
+#' @param npermute Number of permuted data sets used to construct null
+#'   distributions.
+#' @param nreps Number of repeated model fits on the original data.
+#' @param alpha Local significance threshold used for pointwise cutoffs.
+#' @param true.idx Optional vector of true important predictor indices for
+#'   simulation-based scoring.
+#' @param plot Logical; if `TRUE`, plot permutation-based selection summaries.
+#' @param n.var.plot Maximum number of variables to display in plots.
+#' @param xinfo Optional cutpoint information for fixed-effect predictors.
+#' @param numcut Number of cutpoints for continuous predictors.
+#' @param usequants Logical; whether to use quantiles to define cutpoints.
+#' @param cont Logical; whether predictors should be treated as continuous.
+#' @param rm.const Logical; whether to remove constant predictors.
+#' @param k Prior scaling parameter for terminal node means.
+#' @param power Power parameter in the tree split prior.
+#' @param base Base parameter in the tree split prior.
+#' @param split.prob Character string specifying split probability form;
+#'   either `"polynomial"` or `"exponential"`.
+#' @param ntree Number of trees in the BART ensemble.
+#' @param ndpost Number of posterior draws kept after burn-in.
+#' @param nskip Number of burn-in draws.
+#' @param keepevery Thinning interval.
+#' @param printevery Frequency for printed progress updates.
+#' @param z_gamma_mean Prior mean vector for random effect covariance.
+#' @param z_gamma_cov Prior covariance matrix for random effect covariance
+#' @param z_lambda_mean Prior mean vector for random effect scale.
+#' @param z_lambda_cov Prior variance vector for random effect scale.
+#' @param z_alpha Hyperparameter prior for bernoulli indicator of lambda
+#' @param z_beta Hyperparameter prior for bernoulli indicator of lambda.
+#' @param verbose Logical; if `TRUE`, print progress information.
+#'
+#' @return A list containing permutation-based variable selection results,
+#'   including:
+#' \describe{
+#'   \item{vip.imp.cols}{Indices of predictors selected by average VIP.}
+#'   \item{vip.imp.names}{Names of predictors selected by average VIP.}
+#'   \item{avg.vip}{Average variable inclusion proportions across original fits.}
+#'   \item{avg.vip.mtx}{Matrix of VIP values across repeated original fits.}
+#'   \item{permute.vips}{Matrix of VIP values from permuted fits.}
+#'   \item{mi.imp.cols}{Indices of predictors selected by median MI.}
+#'   \item{mi.imp.names}{Names of predictors selected by median MI.}
+#'   \item{median.mi}{Median Metropolis importance across original fits.}
+#'   \item{median.mi.mtx}{Matrix of MI values across repeated original fits.}
+#'   \item{permute.mis}{Matrix of MI values from permuted fits.}
+#'   \item{avg.lambda}{Average random-effect selection pattern frequencies.}
+#'   \item{avg.lambda.mtx}{Matrix of random-effect pattern frequencies across
+#'     repeated original fits.}
+#'   \item{permute.lambda}{Matrix of random-effect pattern frequencies from
+#'     permuted fits.}
+#'   \item{lambda.pointwise.cutoffs}{Pointwise permutation cutoffs for random
+#'     effect selection patterns.}
+#'   \item{rf_select}{Selected random-effect pattern encoded as a binary vector.}
+#'   \item{avg.within.type.vip}{Average within-type VIP values for categorical
+#'     predictors, when applicable.}
+#'   \item{avg.within.type.vip.mtx}{Matrix of within-type VIP values across
+#'     repeated original fits.}
+#'   \item{permute.within.type.vips}{Matrix of within-type VIP values from
+#'     permuted fits.}
+#'   \item{within.type.vip.imp.cols}{Indices of predictors selected by within-type
+#'     VIP, when applicable.}
+#'   \item{within.type.vip.imp.names}{Names of predictors selected by within-type
+#'     VIP, when applicable.}
+#'   \item{original.z_lambda}{Random-effect lambda draws from original fits.}
+#'   \item{original.z_gamma}{Random-effect gamma draws from original fits.}
+#'   \item{permute.z_lambda}{Random-effect lambda draws from permuted fits.}
+#'   \item{permute.z_gamma}{Random-effect gamma draws from permuted fits.}
+#'   \item{varcounts}{Stored variable count matrices from all model fits.}
+#' }
 permute.vs_unified = function(x.train, 
                       y.train, 
                       z.train,
@@ -25,7 +100,6 @@ permute.vs_unified = function(x.train,
                       nskip=1000,
                       keepevery=1L, 
                       printevery=100L,
-                      z_c0, z_d0,
                       z_gamma_mean, z_gamma_cov,
                       z_lambda_mean, z_lambda_cov,
                       z_alpha, z_beta,
@@ -72,7 +146,6 @@ permute.vs_unified = function(x.train,
                  xinfo = xinfo, numcut = numcut, usequants = usequants, cont = cont, rm.const = rm.const,
                  k = k, power = power, base = base, split.prob = split.prob,
                  ntree = ntree, ndpost = ndpost, nskip = nskip, keepevery = keepevery,
-                 z_c0 = z_c0, z_d0 = z_d0,
                  z_gamma_mean = z_gamma_mean, z_gamma_cov = z_gamma_cov,
                  z_lambda_mean = z_lambda_mean, z_lambda_cov = z_lambda_cov, z_alpha = z_alpha, z_beta = z_beta,
                  verbose = verbose)
@@ -83,32 +156,6 @@ permute.vs_unified = function(x.train,
     original.z_lambda[[cnt]] = bart$original.lambda
     original.z_gamma[[cnt]] = bart$original.gamma
     
-    #random effect
-    # for (i in 1:(2 ^ ncol(bart$combined.lambda))) {
-    #   index = as.binary(i - 1) #check the index[i] th variable probability
-    #   if(length(index) != ncol(bart$combined.lambda)) {
-    #     index = rev(c(rep(0, ncol(bart$combined.lambda) - length(index)), index))
-    #   }
-    #   else{
-    #     index = rev(index)
-    #   }
-    #   temp = bart$combined.lambda
-    #   for (j in 1:ncol(bart$combined.lambda)) {
-    #     if(is.null(nrow(temp))) break
-    #     if(as.numeric(index[j]) == 0) {
-    #       temp = temp[which(temp[,j] == 0),]
-    #     }
-    #     else {
-    #       temp = temp[which(temp[,j] != 0),]
-    #     }
-    #   }
-    #   if(is.null(nrow(temp))) {
-    #     avg.lambda.mtx[cnt, i] = 0
-    #   }
-    #   else {
-    #     avg.lambda.mtx[cnt, i] = nrow(temp) / nrow(bart$combined.lambda)
-    #   }
-    # }
     combined.lambda <- bart$combined.lambda
     combined.lambda[combined.lambda != 0] = 1
     for(row in 1:nrow(combined.lambda)) {
@@ -166,8 +213,6 @@ permute.vs_unified = function(x.train,
     print(cnt)
     #shuffle y within cluster
     y.permuted = ave(y.train, id, FUN = function(x) sample(x, replace = FALSE))
-    #shuffle Z within cluster
-    # Shuffle Z within cluster using base R
     
     #check if z.train is constant within id or not
     z_constant <- all(tapply(seq_len(nrow(z.train)), id, function(rows) {
@@ -204,7 +249,6 @@ permute.vs_unified = function(x.train,
                  xinfo = xinfo, numcut = numcut, usequants = usequants, cont = cont, rm.const = rm.const,
                  k = k, power = power, base = base, split.prob = split.prob,
                  ntree = ntree, ndpost = ndpost, nskip = nskip, keepevery = keepevery,
-                 z_c0 = z_c0, z_d0 = z_d0,
                  z_gamma_mean = z_gamma_mean, z_gamma_cov = z_gamma_cov,
                  z_lambda_mean = z_lambda_mean, z_lambda_cov = z_lambda_cov, z_alpha = z_alpha, z_beta = z_beta,
                  verbose = verbose)
@@ -414,9 +458,83 @@ permute.vs_unified = function(x.train,
 }
           
 
+#' Permutation-based variable selection procedure for two-step BART models
 #' @export
 #' @useDynLib BartVS, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' 
+#' @param x.train Training predictors for fixed effects.
+#' @param y.train Numeric response vector.
+#' @param z.train Training predictors for random effects.
+#' @param id Grouping variable for clustered/random-effect structure.
+#' @param probit Logical; currently included for interface compatibility.
+#' @param npermute Number of permuted data sets used to construct null
+#'   distributions.
+#' @param nreps Number of repeated model fits on the original data.
+#' @param alpha Local significance threshold used for pointwise cutoffs.
+#' @param true.idx Optional vector of true important predictor indices for
+#'   simulation-based scoring.
+#' @param plot Logical; if `TRUE`, plot permutation-based selection summaries.
+#' @param n.var.plot Maximum number of variables to display in plots.
+#' @param xinfo Optional cutpoint information for fixed-effect predictors.
+#' @param numcut Number of cutpoints for continuous predictors.
+#' @param usequants Logical; whether to use quantiles to define cutpoints.
+#' @param cont Logical; whether predictors should be treated as continuous.
+#' @param rm.const Logical; whether to remove constant predictors.
+#' @param k Prior scaling parameter for terminal node means.
+#' @param power Power parameter in the tree split prior.
+#' @param base Base parameter in the tree split prior.
+#' @param split.prob Character string specifying split probability form;
+#'   either `"polynomial"` or `"exponential"`.
+#' @param ntree Number of trees in the BART ensemble.
+#' @param ndpost Number of posterior draws kept after burn-in.
+#' @param nskip Number of burn-in draws.
+#' @param keepevery Thinning interval.
+#' @param printevery Frequency for printed progress updates.
+#' @param z_c0 Prior hyperparameter for random-effect variance structure.
+#' @param z_d0 Prior hyperparameter for random-effect variance structure.
+#' @param z_lambda_mean Prior mean for random-effect lambda parameters.
+#' @param z_lambda_cov Prior covariance for random-effect lambda parameters.
+#' @param z_alpha Hyperparameter for the random-effect lambda prior.
+#' @param z_beta Hyperparameter for the random-effect lambda prior.
+#' @param verbose Logical; if `TRUE`, print progress information.
+#'
+#' @return A list containing permutation-based variable selection results,
+#'   including:
+#' \describe{
+#'   \item{vip.imp.cols}{Indices of predictors selected by average VIP.}
+#'   \item{vip.imp.names}{Names of predictors selected by average VIP.}
+#'   \item{avg.vip}{Average variable inclusion proportions across original fits.}
+#'   \item{avg.vip.mtx}{Matrix of VIP values across repeated original fits.}
+#'   \item{permute.vips}{Matrix of VIP values from permuted fits.}
+#'   \item{mi.imp.cols}{Indices of predictors selected by median MI.}
+#'   \item{mi.imp.names}{Names of predictors selected by median MI.}
+#'   \item{median.mi}{Median Metropolis importance across original fits.}
+#'   \item{median.mi.mtx}{Matrix of MI values across repeated original fits.}
+#'   \item{permute.mis}{Matrix of MI values from permuted fits.}
+#'   \item{avg.lambda}{Average random-effect selection pattern frequencies.}
+#'   \item{avg.lambda.mtx}{Matrix of random-effect pattern frequencies across
+#'     repeated original fits.}
+#'   \item{permute.lambda}{Matrix of random-effect pattern frequencies from
+#'     permuted fits.}
+#'   \item{lambda.pointwise.cutoffs}{Pointwise permutation cutoffs for random
+#'     effect selection patterns.}
+#'   \item{avg.within.type.vip}{Average within-type VIP values for categorical
+#'     predictors, when applicable.}
+#'   \item{avg.within.type.vip.mtx}{Matrix of within-type VIP values across
+#'     repeated original fits.}
+#'   \item{permute.within.type.vips}{Matrix of within-type VIP values from
+#'     permuted fits.}
+#'   \item{within.type.vip.imp.cols}{Indices of predictors selected by within-type
+#'     VIP, when applicable.}
+#'   \item{within.type.vip.imp.names}{Names of predictors selected by within-type
+#'     VIP, when applicable.}
+#'   \item{original.z_lambda}{Random-effect lambda draws from original fits.}
+#'   \item{original.z_gamma}{Random-effect gamma draws from original fits.}
+#'   \item{permute.z_lambda}{Random-effect lambda draws from permuted fits.}
+#'   \item{permute.z_gamma}{Random-effect gamma draws from permuted fits.}
+#'   \item{varcounts}{Stored variable count matrices from all model fits.}
+#' }
 permute.vs_two_step = function(x.train, 
                       y.train, 
                       z.train,
@@ -442,7 +560,6 @@ permute.vs_two_step = function(x.train,
                       nskip=1000,
                       keepevery=1L, 
                       printevery=100L,
-                      z_c0, z_d0,
                       z_lambda_mean, z_lambda_cov,
                       z_alpha, z_beta,
                       verbose=FALSE) {
@@ -488,7 +605,6 @@ permute.vs_two_step = function(x.train,
                  xinfo = xinfo, numcut = numcut, usequants = usequants, cont = cont, rm.const = rm.const,
                  k = k, power = power, base = base, split.prob = split.prob,
                  ntree = ntree, ndpost = ndpost, nskip = nskip, keepevery = keepevery,
-                 z_c0 = z_c0, z_d0 = z_d0,
                  z_lambda_mean = z_lambda_mean, z_lambda_cov = z_lambda_cov, z_alpha = z_alpha, z_beta = z_beta,
                  verbose = verbose)
     cnt = cnt + 1
@@ -578,7 +694,6 @@ permute.vs_two_step = function(x.train,
                  xinfo = xinfo, numcut = numcut, usequants = usequants, cont = cont, rm.const = rm.const,
                  k = k, power = power, base = base, split.prob = split.prob,
                  ntree = ntree, ndpost = ndpost, nskip = nskip, keepevery = keepevery,
-                 z_c0 = z_c0, z_d0 = z_d0,
                  z_lambda_mean = z_lambda_mean, z_lambda_cov = z_lambda_cov, z_alpha = z_alpha, z_beta = z_beta,
                  verbose = verbose)
     

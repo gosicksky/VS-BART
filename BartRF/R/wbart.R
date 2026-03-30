@@ -178,15 +178,15 @@ wbart = function(x.train,
   }
   
   #--------------------------------------------------
-  print("Calculate prior")
-  prior_indicator = 0
+  print("Calculate initial value")
+  start_value_indicator = 0
   nu = sigdf
   if(is.na(lambda)) {
     if(is.na(sigest)) {
       if(p < N & q * length(unique(id)) < N) {
         #df = data.frame(t(x.train),t(z.train), y.train)
         #lmf = lm(y.train~., df)
-        prior_indicator = 1
+        start_value_indicator = 1
         colnames(x_lm) <- paste0("x", seq_len(ncol(x_lm)))
         z_lm <- t(z.train)
         colnames(z_lm) <- paste0("z", seq_len(ncol(z_lm)))
@@ -194,53 +194,9 @@ wbart = function(x.train,
         formula <- as.formula(paste("y.train ~", paste(colnames(x_lm), collapse = " + "), "+(", paste(colnames(z_lm), collapse = " + "), "-1 | id)"))
         lmf <- lmer(formula, data = data_lm)
         covariance_matrix <- as.matrix(bdiag(VarCorr(lmf)))
-        print("covariance_matrix")
-        print(covariance_matrix)
-        # 
-        # decomposed <- modified_cholesky_decomposition(covariance_matrix)
-        # 
-        # z.train <- z.train[order(decomposed$order), ]
-        # 
-        # Lambda <- decomposed$Lambda
-        # z_lambda_mean <- diag(Lambda)
-        # zero_index <- which(z_lambda_mean < 1e-16)
-        # z_lambda_mean[zero_index] <- 0
-        # 
-        # Gamma <- decomposed$Gamma
-        # #zero index column and row be zero for Gamma
-        # for (i in zero_index) {
-        #   Gamma[i, ] <- 0
-        #   Gamma[, i] <- 0
-        #   Gamma[i, i] <- 1
-        # }
-        # 
-        # get_lower_triangular <- function(matrix) {
-        #   element <- rep(0, nrow(matrix) * (nrow(matrix) - 1) / 2)
-        #   k = 1
-        #   for(i in 2:ncol(matrix)) {
-        #     for(j in 1:(i - 1)) {
-        #       element[k] <- matrix[i, j]
-        #       k <- k + 1
-        #     }
-        #   }
-        #   return(element)
-        # }
-        # z_gamma_mean <- get_lower_triangular(Gamma)
-        
-        # z_lambda_mean = merTools::REsdExtract(lmf)
-        # print("z_lambda_mean")
-        # print(z_lambda_mean)
         
         sigest = summary(lmf)$sigma
 
-        # print("sigma")
-        # print(sigest)
-        # print("lambda")
-        # print(z_lambda_mean)
-        # print("gamma")
-        # print(z_gamma_mean)
-        
-        ###
         lambda_indicator = which(diag(covariance_matrix) < 0.05)
       } else {
         sigest = sd(y.train)
@@ -258,38 +214,16 @@ wbart = function(x.train,
     tau = sigmaf / sqrt(ntree)
   }
   
-  print("prior calculated")
+  print("Start value calculated")
   
   #--------------------------------------------------
   
   #random effect
-  if (prior_indicator == 1) {
+  if (start_value_indicator == 1) {
     z_b = matrix(rnorm(group_num*q,0,1),group_num,q,byrow=TRUE)
     z_gamma = rnorm(q*(q-1)/2,0,1)
     z_gamma = rep(0, q*(q-1)/2)
-    #z_gamma = c(0,1,0,1,0,1,0,0,0,0,1,0,1,1,0)
-   # z_gamma_mean = c(0,1,0,1,0,1,0,0,0,0,1,0,1,1,0)
-    # z_gamma = c(0,1,0,0,0,0,1,0,1,0)
-    # z_gamma_mean = c(0,1,0,0,0,0,1,0,1,0)
     z_lambda = merTools::REsdExtract(lmf)
-    # z_lambda_mean = merTools::REsdExtract(lmf)
-    # z_lambda = c(0,5,0,0,0,5)
-    # z_lambda_mean =  c(0,5,0,0,0,5)
-    # z_lambda = c(4,0,1,0.5,2)
-    # z_lambda_mean = c(4,0,1,0.5,2)
-    # z_lambda = c(1,0.1,2,0.1,1,0.5,2)
-    # z_lambda_cov = rep(0.1,q)
-    # z_lambda = rtruncnorm(q, a = 0, b = Inf, mean = 0, sd = 1)
-    print("z_lambda")
-    print(z_lambda)
-    print("z_lambda_mean")
-    print(z_lambda_mean)
-    # 
-    # z_lambda_largest = max(z_lambda)
-    # z_alpha = 0.99 * z_lambda / (z_lambda_largest - 0.99 * z_lambda)
-    # 
-    # print("z_alpha")
-    # print(z_alpha)
   }
   else {
     z_b = matrix(rnorm(group_num*q,0,1),group_num,q,byrow=TRUE)
@@ -298,9 +232,6 @@ wbart = function(x.train,
   }
   
   #--------------------------------------------------
-  
-  print("z")
-  print(z.train[1])
   
   #call c++ function
   print(getwd())

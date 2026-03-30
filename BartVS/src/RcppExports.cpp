@@ -25,8 +25,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // cwbart_two_step
-RcppExport SEXP cwbart_two_step(SEXP sexp_in, SEXP sexp_ip, SEXP sexp_inp, SEXP sexp_ix, SEXP sexp_iy, SEXP sexp_ixp, SEXP sexp_im, SEXP sexp_inc, SEXP sexp_ind, SEXP sexp_iburn, SEXP sexp_ipower, SEXP sexp_ibase, SEXP sexp_itau, SEXP sexp_inu, SEXP sexp_ilambda, SEXP sexp_isigest, SEXP sexp_iw, SEXP sexp_idart, SEXP sexp_itheta, SEXP sexp_iomega, SEXP sexp_igrp, SEXP sexp_ia, SEXP sexp_ib, SEXP sexp_irho, SEXP sexp_iaug, SEXP sexp_inkeeptrain, SEXP sexp_inkeeptest, SEXP sexp_inkeeptestme, SEXP sexp_inkeeptreedraws, SEXP sexp_inprintevery, SEXP sexp_Xinfo, SEXP sexp_Z, SEXP sexp_q, SEXP sexp_group_num, SEXP sexp_id, SEXP sexp_z_c0, SEXP sexp_z_d0, SEXP sexp_z_b, SEXP sexp_z_lambda, SEXP sexp_z_lambda_mean, SEXP sexp_z_lambda_cov, SEXP sexp_z_alpha, SEXP sexp_z_beta, SEXP sexp_seed);
-RcppExport SEXP _BartVS_cwbart_two_step(SEXP sexp_inSEXP, SEXP sexp_ipSEXP, SEXP sexp_inpSEXP, SEXP sexp_ixSEXP, SEXP sexp_iySEXP, SEXP sexp_ixpSEXP, SEXP sexp_imSEXP, SEXP sexp_incSEXP, SEXP sexp_indSEXP, SEXP sexp_iburnSEXP, SEXP sexp_ipowerSEXP, SEXP sexp_ibaseSEXP, SEXP sexp_itauSEXP, SEXP sexp_inuSEXP, SEXP sexp_ilambdaSEXP, SEXP sexp_isigestSEXP, SEXP sexp_iwSEXP, SEXP sexp_idartSEXP, SEXP sexp_ithetaSEXP, SEXP sexp_iomegaSEXP, SEXP sexp_igrpSEXP, SEXP sexp_iaSEXP, SEXP sexp_ibSEXP, SEXP sexp_irhoSEXP, SEXP sexp_iaugSEXP, SEXP sexp_inkeeptrainSEXP, SEXP sexp_inkeeptestSEXP, SEXP sexp_inkeeptestmeSEXP, SEXP sexp_inkeeptreedrawsSEXP, SEXP sexp_inprinteverySEXP, SEXP sexp_XinfoSEXP, SEXP sexp_ZSEXP, SEXP sexp_qSEXP, SEXP sexp_group_numSEXP, SEXP sexp_idSEXP, SEXP sexp_z_c0SEXP, SEXP sexp_z_d0SEXP, SEXP sexp_z_bSEXP, SEXP sexp_z_lambdaSEXP, SEXP sexp_z_lambda_meanSEXP, SEXP sexp_z_lambda_covSEXP, SEXP sexp_z_alphaSEXP, SEXP sexp_z_betaSEXP, SEXP sexp_seedSEXP) {
+RcppExport SEXP cwbart_two_step(SEXP sexp_in, SEXP sexp_ip, SEXP sexp_inp, SEXP sexp_ix, SEXP sexp_iy, SEXP sexp_ixp, SEXP sexp_im, SEXP sexp_inc, SEXP sexp_ind, SEXP sexp_iburn, SEXP sexp_ipower, SEXP sexp_ibase, SEXP sexp_itau, SEXP sexp_inu, SEXP sexp_ilambda, SEXP sexp_isigest, SEXP sexp_iw, SEXP sexp_idart, SEXP sexp_itheta, SEXP sexp_iomega, SEXP sexp_igrp, SEXP sexp_ia, SEXP sexp_ib, SEXP sexp_irho, SEXP sexp_iaug, SEXP sexp_inkeeptrain, SEXP sexp_inkeeptest, SEXP sexp_inkeeptestme, SEXP sexp_inkeeptreedraws, SEXP sexp_inprintevery, SEXP sexp_Xinfo, SEXP sexp_Z, SEXP sexp_q, SEXP sexp_group_num, SEXP sexp_id, SEXP sexp_z_b, SEXP sexp_z_lambda, SEXP sexp_z_lambda_mean, SEXP sexp_z_lambda_cov, SEXP sexp_z_alpha, SEXP sexp_z_beta, SEXP sexp_seed);
+RcppExport SEXP _BartVS_cwbart_two_step(SEXP sexp_inSEXP, SEXP sexp_ipSEXP, SEXP sexp_inpSEXP, SEXP sexp_ixSEXP, SEXP sexp_iySEXP, SEXP sexp_ixpSEXP, SEXP sexp_imSEXP, SEXP sexp_incSEXP, SEXP sexp_indSEXP, SEXP sexp_iburnSEXP, SEXP sexp_ipowerSEXP, SEXP sexp_ibaseSEXP, SEXP sexp_itauSEXP, SEXP sexp_inuSEXP, SEXP sexp_ilambdaSEXP, SEXP sexp_isigestSEXP, SEXP sexp_iwSEXP, SEXP sexp_idartSEXP, SEXP sexp_ithetaSEXP, SEXP sexp_iomegaSEXP, SEXP sexp_igrpSEXP, SEXP sexp_iaSEXP, SEXP sexp_ibSEXP, SEXP sexp_irhoSEXP, SEXP sexp_iaugSEXP, SEXP sexp_inkeeptrainSEXP, SEXP sexp_inkeeptestSEXP, SEXP sexp_inkeeptestmeSEXP, SEXP sexp_inkeeptreedrawsSEXP, SEXP sexp_inprinteverySEXP, SEXP sexp_XinfoSEXP, SEXP sexp_ZSEXP, SEXP sexp_qSEXP, SEXP sexp_group_numSEXP, SEXP sexp_idSEXP, SEXP sexp_z_bSEXP, SEXP sexp_z_lambdaSEXP, SEXP sexp_z_lambda_meanSEXP, SEXP sexp_z_lambda_covSEXP, SEXP sexp_z_alphaSEXP, SEXP sexp_z_betaSEXP, SEXP sexp_seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -65,8 +65,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type sexp_q(sexp_qSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_group_num(sexp_group_numSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_id(sexp_idSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sexp_z_c0(sexp_z_c0SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sexp_z_d0(sexp_z_d0SEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_b(sexp_z_bSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_lambda(sexp_z_lambdaSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_lambda_mean(sexp_z_lambda_meanSEXP);
@@ -74,13 +72,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_alpha(sexp_z_alphaSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_beta(sexp_z_betaSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_seed(sexp_seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(cwbart_two_step(sexp_in, sexp_ip, sexp_inp, sexp_ix, sexp_iy, sexp_ixp, sexp_im, sexp_inc, sexp_ind, sexp_iburn, sexp_ipower, sexp_ibase, sexp_itau, sexp_inu, sexp_ilambda, sexp_isigest, sexp_iw, sexp_idart, sexp_itheta, sexp_iomega, sexp_igrp, sexp_ia, sexp_ib, sexp_irho, sexp_iaug, sexp_inkeeptrain, sexp_inkeeptest, sexp_inkeeptestme, sexp_inkeeptreedraws, sexp_inprintevery, sexp_Xinfo, sexp_Z, sexp_q, sexp_group_num, sexp_id, sexp_z_c0, sexp_z_d0, sexp_z_b, sexp_z_lambda, sexp_z_lambda_mean, sexp_z_lambda_cov, sexp_z_alpha, sexp_z_beta, sexp_seed));
+    rcpp_result_gen = Rcpp::wrap(cwbart_two_step(sexp_in, sexp_ip, sexp_inp, sexp_ix, sexp_iy, sexp_ixp, sexp_im, sexp_inc, sexp_ind, sexp_iburn, sexp_ipower, sexp_ibase, sexp_itau, sexp_inu, sexp_ilambda, sexp_isigest, sexp_iw, sexp_idart, sexp_itheta, sexp_iomega, sexp_igrp, sexp_ia, sexp_ib, sexp_irho, sexp_iaug, sexp_inkeeptrain, sexp_inkeeptest, sexp_inkeeptestme, sexp_inkeeptreedraws, sexp_inprintevery, sexp_Xinfo, sexp_Z, sexp_q, sexp_group_num, sexp_id, sexp_z_b, sexp_z_lambda, sexp_z_lambda_mean, sexp_z_lambda_cov, sexp_z_alpha, sexp_z_beta, sexp_seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // cwbart_unified
-SEXP cwbart_unified(SEXP sexp_in, SEXP sexp_ip, SEXP sexp_inp, SEXP sexp_ix, SEXP sexp_iy, SEXP sexp_ixp, SEXP sexp_im, SEXP sexp_inc, SEXP sexp_ind, SEXP sexp_iburn, SEXP sexp_ipower, SEXP sexp_ibase, SEXP sexp_itau, SEXP sexp_inu, SEXP sexp_ilambda, SEXP sexp_isigest, SEXP sexp_iw, SEXP sexp_idart, SEXP sexp_itheta, SEXP sexp_iomega, SEXP sexp_igrp, SEXP sexp_ia, SEXP sexp_ib, SEXP sexp_irho, SEXP sexp_iaug, SEXP sexp_inkeeptrain, SEXP sexp_inkeeptest, SEXP sexp_inkeeptestme, SEXP sexp_inkeeptreedraws, SEXP sexp_inprintevery, SEXP sexp_Xinfo, SEXP sexp_Z, SEXP sexp_q, SEXP sexp_group_num, SEXP sexp_id, SEXP sexp_z_c0, SEXP sexp_z_d0, SEXP sexp_z_b, SEXP sexp_z_gamma, SEXP sexp_z_gamma_mean, SEXP sexp_z_gamma_cov, SEXP sexp_z_lambda, SEXP sexp_z_lambda_mean, SEXP sexp_z_lambda_cov, SEXP sexp_z_alpha, SEXP sexp_z_beta, SEXP sexp_seed);
-RcppExport SEXP _BartVS_cwbart_unified(SEXP sexp_inSEXP, SEXP sexp_ipSEXP, SEXP sexp_inpSEXP, SEXP sexp_ixSEXP, SEXP sexp_iySEXP, SEXP sexp_ixpSEXP, SEXP sexp_imSEXP, SEXP sexp_incSEXP, SEXP sexp_indSEXP, SEXP sexp_iburnSEXP, SEXP sexp_ipowerSEXP, SEXP sexp_ibaseSEXP, SEXP sexp_itauSEXP, SEXP sexp_inuSEXP, SEXP sexp_ilambdaSEXP, SEXP sexp_isigestSEXP, SEXP sexp_iwSEXP, SEXP sexp_idartSEXP, SEXP sexp_ithetaSEXP, SEXP sexp_iomegaSEXP, SEXP sexp_igrpSEXP, SEXP sexp_iaSEXP, SEXP sexp_ibSEXP, SEXP sexp_irhoSEXP, SEXP sexp_iaugSEXP, SEXP sexp_inkeeptrainSEXP, SEXP sexp_inkeeptestSEXP, SEXP sexp_inkeeptestmeSEXP, SEXP sexp_inkeeptreedrawsSEXP, SEXP sexp_inprinteverySEXP, SEXP sexp_XinfoSEXP, SEXP sexp_ZSEXP, SEXP sexp_qSEXP, SEXP sexp_group_numSEXP, SEXP sexp_idSEXP, SEXP sexp_z_c0SEXP, SEXP sexp_z_d0SEXP, SEXP sexp_z_bSEXP, SEXP sexp_z_gammaSEXP, SEXP sexp_z_gamma_meanSEXP, SEXP sexp_z_gamma_covSEXP, SEXP sexp_z_lambdaSEXP, SEXP sexp_z_lambda_meanSEXP, SEXP sexp_z_lambda_covSEXP, SEXP sexp_z_alphaSEXP, SEXP sexp_z_betaSEXP, SEXP sexp_seedSEXP) {
+SEXP cwbart_unified(SEXP sexp_in, SEXP sexp_ip, SEXP sexp_inp, SEXP sexp_ix, SEXP sexp_iy, SEXP sexp_ixp, SEXP sexp_im, SEXP sexp_inc, SEXP sexp_ind, SEXP sexp_iburn, SEXP sexp_ipower, SEXP sexp_ibase, SEXP sexp_itau, SEXP sexp_inu, SEXP sexp_ilambda, SEXP sexp_isigest, SEXP sexp_iw, SEXP sexp_idart, SEXP sexp_itheta, SEXP sexp_iomega, SEXP sexp_igrp, SEXP sexp_ia, SEXP sexp_ib, SEXP sexp_irho, SEXP sexp_iaug, SEXP sexp_inkeeptrain, SEXP sexp_inkeeptest, SEXP sexp_inkeeptestme, SEXP sexp_inkeeptreedraws, SEXP sexp_inprintevery, SEXP sexp_Xinfo, SEXP sexp_Z, SEXP sexp_q, SEXP sexp_group_num, SEXP sexp_id, SEXP sexp_z_b, SEXP sexp_z_gamma, SEXP sexp_z_gamma_mean, SEXP sexp_z_gamma_cov, SEXP sexp_z_lambda, SEXP sexp_z_lambda_mean, SEXP sexp_z_lambda_cov, SEXP sexp_z_alpha, SEXP sexp_z_beta, SEXP sexp_seed);
+RcppExport SEXP _BartVS_cwbart_unified(SEXP sexp_inSEXP, SEXP sexp_ipSEXP, SEXP sexp_inpSEXP, SEXP sexp_ixSEXP, SEXP sexp_iySEXP, SEXP sexp_ixpSEXP, SEXP sexp_imSEXP, SEXP sexp_incSEXP, SEXP sexp_indSEXP, SEXP sexp_iburnSEXP, SEXP sexp_ipowerSEXP, SEXP sexp_ibaseSEXP, SEXP sexp_itauSEXP, SEXP sexp_inuSEXP, SEXP sexp_ilambdaSEXP, SEXP sexp_isigestSEXP, SEXP sexp_iwSEXP, SEXP sexp_idartSEXP, SEXP sexp_ithetaSEXP, SEXP sexp_iomegaSEXP, SEXP sexp_igrpSEXP, SEXP sexp_iaSEXP, SEXP sexp_ibSEXP, SEXP sexp_irhoSEXP, SEXP sexp_iaugSEXP, SEXP sexp_inkeeptrainSEXP, SEXP sexp_inkeeptestSEXP, SEXP sexp_inkeeptestmeSEXP, SEXP sexp_inkeeptreedrawsSEXP, SEXP sexp_inprinteverySEXP, SEXP sexp_XinfoSEXP, SEXP sexp_ZSEXP, SEXP sexp_qSEXP, SEXP sexp_group_numSEXP, SEXP sexp_idSEXP, SEXP sexp_z_bSEXP, SEXP sexp_z_gammaSEXP, SEXP sexp_z_gamma_meanSEXP, SEXP sexp_z_gamma_covSEXP, SEXP sexp_z_lambdaSEXP, SEXP sexp_z_lambda_meanSEXP, SEXP sexp_z_lambda_covSEXP, SEXP sexp_z_alphaSEXP, SEXP sexp_z_betaSEXP, SEXP sexp_seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -119,8 +117,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type sexp_q(sexp_qSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_group_num(sexp_group_numSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_id(sexp_idSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sexp_z_c0(sexp_z_c0SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sexp_z_d0(sexp_z_d0SEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_b(sexp_z_bSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_gamma(sexp_z_gammaSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_gamma_mean(sexp_z_gamma_meanSEXP);
@@ -131,15 +127,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_alpha(sexp_z_alphaSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_z_beta(sexp_z_betaSEXP);
     Rcpp::traits::input_parameter< SEXP >::type sexp_seed(sexp_seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(cwbart_unified(sexp_in, sexp_ip, sexp_inp, sexp_ix, sexp_iy, sexp_ixp, sexp_im, sexp_inc, sexp_ind, sexp_iburn, sexp_ipower, sexp_ibase, sexp_itau, sexp_inu, sexp_ilambda, sexp_isigest, sexp_iw, sexp_idart, sexp_itheta, sexp_iomega, sexp_igrp, sexp_ia, sexp_ib, sexp_irho, sexp_iaug, sexp_inkeeptrain, sexp_inkeeptest, sexp_inkeeptestme, sexp_inkeeptreedraws, sexp_inprintevery, sexp_Xinfo, sexp_Z, sexp_q, sexp_group_num, sexp_id, sexp_z_c0, sexp_z_d0, sexp_z_b, sexp_z_gamma, sexp_z_gamma_mean, sexp_z_gamma_cov, sexp_z_lambda, sexp_z_lambda_mean, sexp_z_lambda_cov, sexp_z_alpha, sexp_z_beta, sexp_seed));
+    rcpp_result_gen = Rcpp::wrap(cwbart_unified(sexp_in, sexp_ip, sexp_inp, sexp_ix, sexp_iy, sexp_ixp, sexp_im, sexp_inc, sexp_ind, sexp_iburn, sexp_ipower, sexp_ibase, sexp_itau, sexp_inu, sexp_ilambda, sexp_isigest, sexp_iw, sexp_idart, sexp_itheta, sexp_iomega, sexp_igrp, sexp_ia, sexp_ib, sexp_irho, sexp_iaug, sexp_inkeeptrain, sexp_inkeeptest, sexp_inkeeptestme, sexp_inkeeptreedraws, sexp_inprintevery, sexp_Xinfo, sexp_Z, sexp_q, sexp_group_num, sexp_id, sexp_z_b, sexp_z_gamma, sexp_z_gamma_mean, sexp_z_gamma_cov, sexp_z_lambda, sexp_z_lambda_mean, sexp_z_lambda_cov, sexp_z_alpha, sexp_z_beta, sexp_seed));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_BartVS_cpwbart", (DL_FUNC) &_BartVS_cpwbart, 3},
-    {"_BartVS_cwbart_two_step", (DL_FUNC) &_BartVS_cwbart_two_step, 44},
-    {"_BartVS_cwbart_unified", (DL_FUNC) &_BartVS_cwbart_unified, 47},
+    {"_BartVS_cwbart_two_step", (DL_FUNC) &_BartVS_cwbart_two_step, 42},
+    {"_BartVS_cwbart_unified", (DL_FUNC) &_BartVS_cwbart_unified, 45},
     {NULL, NULL, 0}
 };
 
