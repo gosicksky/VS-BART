@@ -21,6 +21,8 @@ The 'BartVS' package provides the following functions for variable selection in 
 
 ## Example
 
+Data example can be seen in data_simulation.R. The following code snippets show how to use the functions for variable selection in the unified model, two-step model, and sparse BART variable selection.
+
 ##### Unified model variable selection
 
 ```R
