@@ -19,6 +19,8 @@ The 'BartVS' package provides the following functions for variable selection in 
 
 3. `wabrt_unified` is a wrapper function for fitting the unified BART model, which is used within the variable selection procedure. The parameter `sparse` controls whether to use a sparse BART model for variable selection.
 
+4. `wbart_two_step` is a wrapper function for fitting the two-step BART model, which is used within the variable selection procedure for the two-step model and could also be used for random effect variable selection as the second step.
+
 ## Example
 
 Data example can be seen in data_simulation.R. The following code snippets show how to use the functions for variable selection in the unified model, two-step model, and sparse BART variable selection.
