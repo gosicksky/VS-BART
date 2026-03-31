@@ -9,6 +9,8 @@ This is the repository for the paper "Multi-level variable selection using a BAR
 install.packages("BartVS_0.1.0.tar.gz")
 ```
 
+BartRF and BartRI is for revision code.
+
 ## Functions
 
 The 'BartVS' package provides the following functions for variable selection in multi-level models:
