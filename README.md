@@ -9,7 +9,7 @@ This is the repository for the paper "Multi-level variable selection using a BAR
 install.packages("BartVS_0.1.0.tar.gz")
 ```
 
-BartRF and BartRI is for the code submitted in revision.
+BartRF and BartRI is only for the code submitted in revision.
 
 ## Functions
 
